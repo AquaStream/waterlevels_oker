@@ -1,0 +1,10 @@
+# .pre-commit-config.yaml
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: check-ast # Testing valid python code
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.11.0  # Use the latest version available
+    hooks:
+      - id: mypy # Testing valid python static types code
