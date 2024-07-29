@@ -5,6 +5,7 @@ import requests
 import zipfile
 import io
 import os
+import re
 import shutil
 from waterlevels_oker import utils
 from waterlevels_oker.config import *
@@ -32,7 +33,7 @@ def get_climate_data():
             except Exception as e:
                 print("Failed to delete %s. Reason: %s" % (file_path, e))
 
-        print("Removed old climate data")
+    print("Removed old climate data")
 
     # Download new climate data
     base_url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/hourly/"
@@ -72,14 +73,16 @@ def process_raw_data():
         files_list = [
             file
             for file in os.listdir(utils.get_raw_path("climate"))
-            if file.startswith(feature)
+            if re.match(fr"^{feature}_\d", file)
         ]
         data_list = []
         for file in files_list:
             try:
                 data = pd.read_csv(utils.get_raw_path(f"climate/{file}"), sep=";", low_memory=False)
+                data.columns = [col.strip() for col in data.columns]
             except UnicodeDecodeError:
                 data = pd.read_csv(utils.get_raw_path(f"climate/{file}"), sep=";", low_memory=False, encoding="latin_1")
+                data.columns = [col.strip() for col in data.columns]
 
             # drop first and last columns, as they only specify the station id and end of row
             data = data.iloc[:, 1:-1]

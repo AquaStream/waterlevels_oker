@@ -18,7 +18,6 @@ FEATURES = [
         "solar",
         "sun",
         "visibility",
-        "weather_phenomena",
         "wind",
         "wind_synop"
     ]
