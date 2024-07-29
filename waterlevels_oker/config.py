@@ -5,3 +5,20 @@ OUTPUT_DIR = "outputs"
 PROCESSED_DIR = "processed"
 RAW_DIR = "raw"
 
+FEATURES = [
+        "air_temperature",
+        "cloud_type",
+        "cloudiness",
+        "dew_point",
+        "extreme_wind",
+        "moisture",
+        "precipitation",
+        "pressure",
+        "soil_temperature",
+        "solar",
+        "sun",
+        "visibility",
+        "weather_phenomena",
+        "wind",
+        "wind_synop"
+    ]
