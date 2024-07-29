@@ -15,8 +15,13 @@ The following are prerequisites to run this codebase:
 	```sh
 	poetry install
 	```
+2. Download data
+    ```sh
+    make get_climate_data
+    make process_raw_data
+    ```
 
-# General documentation
+
 
 ## `data` vs `static` directories
 The `data` directory is for storing raw data, processed data (produced by this code but not final) and output data.
