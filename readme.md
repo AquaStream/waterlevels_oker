@@ -15,11 +15,11 @@ The following are prerequisites to run this codebase:
 	```sh
 	poetry install
 	```
-2. Download data
+2. Download climate data
     ```sh
     make get_climate_data
-    make process_raw_data
     ```
+3. Put oker data into `/data/raw`
 
 
 

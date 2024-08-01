@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import pandas as pd
 import requests
 
@@ -7,19 +5,14 @@ from waterlevels_oker import utils
 from waterlevels_oker.config import *
 
 
-def get_climate_data() -> pd.DataFrame:
+def get_climate_data():
     """
     Gets weather data from https://brightsky.dev/docs/#/operations/getWeather starting 2010-01-01 until now.
-
-    Returns
-    -------
-    pd.DataFrame
-        _description_
     """
     params = {
         "date": "2010-01-01",
         "dwd_station_id": "00662",
-        "last_date": datetime.now().strftime("%Y-%m-%d"),
+        "last_date": "2024-08-01",
     }
 
     url = "https://api.brightsky.dev/weather"
