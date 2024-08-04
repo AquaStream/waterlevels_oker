@@ -5,7 +5,7 @@ from waterlevels_oker import utils
 from waterlevels_oker.config import *
 
 
-def get_climate_data():
+def get_raw_weather_data():
     """
     Gets weather data from https://brightsky.dev/docs/#/operations/getWeather starting 2010-01-01 until now.
     """
@@ -59,14 +59,61 @@ def get_forecast(start: str, end: str) -> pd.DataFrame:
 
     return forecast
 
+
 def preprocess_weather_data() -> pd.DataFrame:
-    climate_raw = pd.read_csv(utils.get_raw_path("climate_data.csv"), parse_dates=[0], index_col=0)
-    drop_cols = ["source_id", "condition", "precipitation_probability", "precipitation_probability_6h", "fallback_source_ids", "icon"]
-    climate_raw = climate_raw.drop(columns=drop_cols)
+    """
+    Process raw weather data. Save as csv and return Dataframe.
+
+    - Drops columns ["source_id",
+        "condition",
+        "precipitation_probability",
+        "precipitation_probability_6h",
+        "fallback_source_ids",
+        "icon"]
+    - Impute missing sunshine values during nighttime with 0
+
+    Returns
+    -------
+    pd.DataFrame
+        Preprocessed weather data
+    """
+    weather_raw = pd.read_csv(
+        utils.get_raw_path("climate_data.csv"), parse_dates=[0], index_col=0
+    )
+    drop_cols = [
+        "source_id",
+        "condition",
+        "precipitation_probability",
+        "precipitation_probability_6h",
+        "fallback_source_ids",
+        "icon",
+    ]
+    weather_raw = weather_raw.drop(columns=drop_cols)
     # Impute missing sunshine values during nighttime with 0
-    night_missing_sunshine = climate_raw.loc[climate_raw["sunshine"].isna() & climate_raw.index.hour.isin([21, 22, 23, 0, 1, 2])].index
-    climate_raw.loc[night_missing_sunshine, "sunshine"] = 0
+    night_missing_sunshine = weather_raw.loc[
+        weather_raw["sunshine"].isna()
+        & weather_raw.index.hour.isin([21, 22, 23, 0, 1, 2])
+    ].index
+    weather_raw.loc[night_missing_sunshine, "sunshine"] = 0
 
-    climate_raw.to_csv(utils.get_processed_path("processed_weather.csv"), index=False)
+    weather_raw = weather_raw.dropna(axis=0)
 
-    return climate_raw
+    weather_raw.to_csv(utils.get_processed_path("processed_weather.csv"))
+
+    return weather_raw
+
+
+def get_weather_data() -> pd.DataFrame:
+    """
+    Returns preprocessed weather data as Dataframe.
+
+    Returns
+    -------
+    pd.DataFrame
+        Processed weather data
+    """
+    weather_data = pd.read_csv(
+        utils.get_processed_path("processed_weather.csv"), index_col=0
+    )
+
+    return weather_data
