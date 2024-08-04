@@ -93,7 +93,7 @@ def preprocess_ohrum_data() -> pd.DataFrame:
     )
     ohrum_data = ohrum_data.astype(dtype={"Waterlevel relative [cm]": "float"})
 
-    ohrum_data.to_csv(utils.get_processed_path("ohrum_data.csv"))
+    ohrum_data.to_csv(utils.get_processed_path("processed_ohrum_data.csv"))
 
     return ohrum_data
 
@@ -108,7 +108,7 @@ def get_ohrum_data() -> pd.DataFrame:
         Processed Ohrum data with DatatimeIndex and waterlevel measurements
     """
     ohrum_data = pd.read_csv(
-        utils.get_processed_path("ohrum_data.csv"),
+        utils.get_processed_path("processed_ohrum_data.csv"),
         index_col=0,
         parse_dates=[0],
         date_format="%Y-%m-%d %H:%M:%S",
