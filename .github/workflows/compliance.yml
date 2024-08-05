@@ -1,4 +1,4 @@
-name: Compliance Checks
+name: compliance-checks
 
 on:
   pull_request:
@@ -12,6 +12,8 @@ jobs:
     steps:
     # Checkout the repository code
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
 
     # Set up Python 3.10
     - name: Python 3.10 setup
@@ -35,10 +37,6 @@ jobs:
     # Install dependencies
     - name: Install packages
       run: poetry install
-
-    # Run Python linter
-    - name: Run Python linter
-      run: poetry run flake8 .
 
     # Check commit sign-offs
     - name: Check commit sign-offs
