@@ -7,12 +7,12 @@ from waterlevels_oker.config import *
 
 def get_raw_weather_data():
     """
-    Gets weather data from https://brightsky.dev/docs/#/operations/getWeather starting 2010-01-01 until now.
+    Gets weather data from https://brightsky.dev/docs/#/operations/getWeather starting 2010-01-01 until 2014-07-31.
     """
     params = {
         "date": "2010-01-01",
         "dwd_station_id": "00662",
-        "last_date": "2024-08-01",
+        "last_date": "2024-07-31",
     }
 
     url = "https://api.brightsky.dev/weather"
@@ -71,6 +71,7 @@ def preprocess_weather_data() -> pd.DataFrame:
         "fallback_source_ids",
         "icon"]
     - Impute missing sunshine values during nighttime with 0
+    - Drops rows with missing values
 
     Returns
     -------
@@ -96,24 +97,9 @@ def preprocess_weather_data() -> pd.DataFrame:
     ].index
     weather_raw.loc[night_missing_sunshine, "sunshine"] = 0
 
+    # Drop rows with missing values
     weather_raw = weather_raw.dropna(axis=0)
 
     weather_raw.to_csv(utils.get_processed_path("processed_weather.csv"))
 
     return weather_raw
-
-
-def get_weather_data() -> pd.DataFrame:
-    """
-    Returns preprocessed weather data as Dataframe.
-
-    Returns
-    -------
-    pd.DataFrame
-        Processed weather data
-    """
-    weather_data = pd.read_csv(
-        utils.get_processed_path("processed_weather.csv"), index_col=0
-    )
-
-    return weather_data
