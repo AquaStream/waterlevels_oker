@@ -38,7 +38,8 @@ jobs:
     - name: Install packages
       run: poetry install
 
-     - name: Commit Sign-off
+    # Commit Sign-off
+    - name: Commit Sign-off
       run: |
         if ! git log --format='%H %B' -n 1 | grep 'Signed-off-by'; then
           echo "Commit must be signed off"
