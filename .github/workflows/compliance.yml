@@ -47,16 +47,19 @@ jobs:
       run: git log -n 1
 
     # Commit Sign-off
-    - name: Commit Sign-off
+    - name: Check commits for sign-off
       run: |
-        echo "Checking commit for sign-off..."
-        git log --format='%H %B' -n 1
-        if ! git log --format='%H %B' -n 1 | grep 'Signed-off-by'; then
-          echo "Error: Commit must be signed off"
-          echo "Please use 'git commit -s' to sign off your commits."
-          exit 1
-        else
-          echo "Commit is properly signed off."
+        echo "Checking all commits in the pull request for sign-off..."
+        commits=$(git rev-list --no-merges --left-only --ancestry-path origin/main...HEAD)
+        for commit in $commits; do
+          if ! git log --format='%H %B' -n 1 $commit | grep 'Signed-off-by'; then
+            echo "Error: Commit $commit must be signed off"
+            echo "Please use 'git commit -s' to sign off your commits."
+            exit 1
+          else
+            echo "Commit $commit is properly signed off."
+          fi
+        done
 
     # Run gitlint on commit messages
     - name: Gitlint
