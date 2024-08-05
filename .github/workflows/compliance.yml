@@ -41,8 +41,10 @@ jobs:
       id: changed-files
       run: |
         git fetch origin main
-        git diff --name-only origin/main...HEAD > changed_files.txt
+        MERGE_BASE=$(git merge-base origin/main HEAD)
+        git diff --name-only $MERGE_BASE > changed_files.txt
         echo "::set-output name=files::$(cat changed_files.txt | tr '\n' ' ')"
+      shell: bash
 
     # Run Python linter (flake8) on changed files
     - name: Run Python linter
