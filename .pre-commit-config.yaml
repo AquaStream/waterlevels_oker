@@ -8,3 +8,4 @@ repos:
     rev: v1.11.0  # Use the latest version available
     hooks:
       - id: mypy # Testing valid python static types code
+        additional_dependencies: ['types-requests']
