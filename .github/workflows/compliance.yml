@@ -1,4 +1,4 @@
-name: Comprehensive Checks on Changed Files
+name: Compliance Checks
 
 on:
   pull_request:
@@ -36,24 +36,9 @@ jobs:
     - name: Install packages
       run: poetry install
 
-    # Determine changed files in the PR
-    - name: Get list of changed files
-      id: changed-files
-      run: |
-        git fetch origin main
-        MERGE_BASE=$(git merge-base origin/main HEAD)
-        git diff --name-only $MERGE_BASE > changed_files.txt
-        echo "::set-output name=files::$(cat changed_files.txt | tr '\n' ' ')"
-      shell: bash
-
-    # Run Python linter (flake8) on changed files
+    # Run Python linter
     - name: Run Python linter
-      if: ${{ steps.changed-files.outputs.files }}
-      run: |
-        CHANGED_FILES=$(echo ${{ steps.changed-files.outputs.files }} | tr ' ' '\n' | grep '\.py$')
-        if [ -n "$CHANGED_FILES" ]; then
-          poetry run flake8 $CHANGED_FILES
-        fi
+      run: poetry run flake8 .
 
     # Check commit sign-offs
     - name: Check commit sign-offs
