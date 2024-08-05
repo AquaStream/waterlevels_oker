@@ -38,13 +38,25 @@ jobs:
     - name: Install packages
       run: poetry install
 
+    # Debugging: Output the environment variables
+    - name: Show environment variables
+      run: env
+
+    # Debugging: Output the entire last commit message
+    - name: Show last commit message
+      run: git log -n 1
+
     # Commit Sign-off
     - name: Commit Sign-off
       run: |
+        echo "Checking commit for sign-off..."
+        git log --format='%H %B' -n 1
         if ! git log --format='%H %B' -n 1 | grep 'Signed-off-by'; then
-          echo "Commit must be signed off"
+          echo "Error: Commit must be signed off"
+          echo "Please use 'git commit -s' to sign off your commits."
           exit 1
-        fi
+        else
+          echo "Commit is properly signed off."
 
     # Run gitlint on commit messages
     - name: Gitlint
