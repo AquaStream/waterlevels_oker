@@ -6,6 +6,9 @@ on:
       - main
     types: [opened, synchronize, reopened]
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
