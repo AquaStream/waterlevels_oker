@@ -1,4 +1,4 @@
-name: Sign offs and Gitlint
+name: compliance-checks
 
 on:
   pull_request:
