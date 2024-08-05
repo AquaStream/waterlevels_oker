@@ -1,0 +1,39 @@
+name: Deploy MkDocs to Organization GitHub Pages
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+
+      - name: Build documentation
+        run: |
+          cd documentation
+          poetry run mkdocs build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.AQUASTREAM_DEPLOY_KEY }}
+          publish_dir: documentation/site
+          publish_branch: gh-pages
+          external_repository: AquaStream/aquastream.github.io
