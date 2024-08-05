@@ -185,3 +185,6 @@ data/outputs/**
 
 # Models
 models/**
+
+# Documentation
+documentation/site/**
