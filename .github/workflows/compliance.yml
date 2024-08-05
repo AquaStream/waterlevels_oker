@@ -1,0 +1,72 @@
+name: Comprehensive Checks on Changed Files
+
+on:
+  pull_request:
+    branches: main
+
+jobs:
+  compliance-checks:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repository code
+    - uses: actions/checkout@v3
+
+    # Set up Python 3.10
+    - name: Python 3.10 setup
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+
+    # Install Poetry
+    - name: Install Poetry
+      uses: abatilo/actions-poetry@v2
+
+    # Cache Poetry packages
+    - name: Cache Poetry packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pypoetry
+        key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-poetry-
+
+    # Install dependencies
+    - name: Install packages
+      run: poetry install
+
+    # Determine changed files in the PR
+    - name: Get list of changed files
+      id: changed-files
+      run: |
+        git fetch origin main
+        git diff --name-only origin/main...HEAD > changed_files.txt
+        echo "::set-output name=files::$(cat changed_files.txt | tr '\n' ' ')"
+
+    # Run Python linter (flake8) on changed files
+    - name: Run Python linter
+      if: ${{ steps.changed-files.outputs.files }}
+      run: |
+        CHANGED_FILES=$(echo ${{ steps.changed-files.outputs.files }} | tr ' ' '\n' | grep '\.py$')
+        if [ -n "$CHANGED_FILES" ]; then
+          poetry run flake8 $CHANGED_FILES
+        fi
+
+    # Check commit sign-offs
+    - name: Check commit sign-offs
+      run: |
+        if ! git log --format='%H %B' -n 1 | grep -iq 'signed-off-by'; then
+          echo "Commit must be signed off"
+          exit 1
+        fi
+
+    # Run gitlint on commit messages
+    - name: Run commit message linting
+      run: |
+        pip install gitlint
+        gitlint
+
+    # Run security checks
+    - name: Run security checks
+      run: poetry run safety check
