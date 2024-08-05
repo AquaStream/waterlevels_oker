@@ -1,4 +1,4 @@
-name: Deploy MkDocs to Organization GitHub Pages
+name: Deploy MkDocs to GitHub Pages
 
 on:
   pull_request:
@@ -33,7 +33,6 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          deploy_key: ${{ secrets.AQUASTREAM_DEPLOY_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: documentation/site
           publish_branch: gh-pages
-          external_repository: AquaStream/aquastream.github.io
