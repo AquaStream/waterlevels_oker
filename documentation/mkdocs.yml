@@ -1,0 +1,6 @@
+site_name: AquaStream Documentation
+docs_dir: docs
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Models: models.md
