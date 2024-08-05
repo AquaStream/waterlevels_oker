@@ -1,4 +1,4 @@
-# About this project
+# About this project - WaterLevels Oker
 
 Predicting the waterlevels of the German river Oker.
 
