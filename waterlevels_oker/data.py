@@ -96,22 +96,3 @@ def preprocess_ohrum_data() -> pd.DataFrame:
     ohrum_data.to_csv(utils.get_processed_path("processed_ohrum_data.csv"))
 
     return ohrum_data
-
-
-def get_ohrum_data() -> pd.DataFrame:
-    """
-    Return processeed Ohrum data
-
-    Returns
-    -------
-    pd.DataFrame
-        Processed Ohrum data with DatatimeIndex and waterlevel measurements
-    """
-    ohrum_data = pd.read_csv(
-        utils.get_processed_path("processed_ohrum_data.csv"),
-        index_col=0,
-        parse_dates=[0],
-        date_format="%Y-%m-%d %H:%M:%S",
-    )
-
-    return ohrum_data
