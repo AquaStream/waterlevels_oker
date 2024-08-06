@@ -103,53 +103,38 @@ def preprocess_weather_data() -> pd.DataFrame:
     return weather_raw
 
 
-def get_weather_data() -> pd.DataFrame:
+def preprocess_ohrum_data() -> pd.DataFrame:
     """
-    Returns preprocessed weather data as Dataframe.
-
+    Process raw Ohrum data. Saves it as .csv and returns Dataframe
     Returns
     -------
     pd.DataFrame
-        Processed weather data
+        Processed Ohrum data
     """
-    weather_data = pd.read_csv(
-        utils.get_processed_path("processed_weather.csv"), index_col=0
+    ohrum_data = pd.read_excel(utils.get_raw_path("Ohrum.xlsx"))
+    ohrum_data = ohrum_data.dropna()
+
+    ohrum_data = ohrum_data.rename(
+        columns={"Waserstand relativ [cm]": "Waterlevel relative [cm]"}
     )
 
-    return weather_data
+    # Create new datetime index
+    ohrum_str = ohrum_data.astype("str")
+    ohrum_data.index = pd.to_datetime(
+        ohrum_str["Datum"] + " " + ohrum_str["Zeit"], format="%Y-%m-%d %H:%M:%S"
+    )
 
-def preprocess_ohrum_data() -> pd.DataFrame:
-     """
-     Process raw Ohrum data. Saves it as .csv and returns Dataframe
-     Returns
-     -------
-     pd.DataFrame
-         Processed Ohrum data
-     """
-     ohrum_data = pd.read_excel(utils.get_raw_path("Ohrum.xlsx"))
-     ohrum_data = ohrum_data.dropna()
+    ohrum_data = ohrum_data.drop(columns=["Datum", "Zeit"])
 
-     ohrum_data = ohrum_data.rename(
-         columns={"Waserstand relativ [cm]": "Waterlevel relative [cm]"}
-     )
+    # Keep only measurements at full hour
+    ohrum_data = ohrum_data.loc[ohrum_data.index.minute == 0]
 
-     # Create new datetime index
-     ohrum_str = ohrum_data.astype("str")
-     ohrum_data.index = pd.to_datetime(
-         ohrum_str["Datum"] + " " + ohrum_str["Zeit"], format="%Y-%m-%d %H:%M:%S"
-     )
+    # Impute missing value at 2018-01-01 00:00 with mean
+    ohrum_data.loc[ohrum_data["Waterlevel relative [cm]"] == " ---"] = np.mean(
+        [ohrum_data.loc["2017-12-31 23:00:00"], ohrum_data.loc["2018-01-01 01:00:00"]]
+    )
+    ohrum_data = ohrum_data.astype(dtype={"Waterlevel relative [cm]": "float"})
 
-     ohrum_data = ohrum_data.drop(columns=["Datum", "Zeit"])
+    ohrum_data.to_csv(utils.get_processed_path("processed_ohrum_data.csv"))
 
-     # Keep only measurements at full hour
-     ohrum_data = ohrum_data.loc[ohrum_data.index.minute == 0]
-
-     # Impute missing value at 2018-01-01 00:00 with mean
-     ohrum_data.loc[ohrum_data["Waterlevel relative [cm]"] == " ---"] = np.mean(
-         [ohrum_data.loc["2017-12-31 23:00:00"], ohrum_data.loc["2018-01-01 01:00:00"]]
-     )
-     ohrum_data = ohrum_data.astype(dtype={"Waterlevel relative [cm]": "float"})
-
-     ohrum_data.to_csv(utils.get_processed_path("processed_ohrum_data.csv"))
-
-     return ohrum_data
+    return ohrum_data
