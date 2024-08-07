@@ -119,7 +119,7 @@ def preprocess_ohrum_data() -> pd.DataFrame:
 	ohrum_data = ohrum_data.dropna()
 
 	ohrum_data = ohrum_data.rename(
-		columns={"Waserstand relativ [cm]": "Waterlevel relative [cm]"}
+		columns={"Waserstand relativ [cm]": "waterlevel relative [cm]"}
 	)
 
 	# Create new datetime index
@@ -134,10 +134,10 @@ def preprocess_ohrum_data() -> pd.DataFrame:
 	ohrum_data = ohrum_data.loc[ohrum_data.index.minute == 0]
 
 	# Impute missing value at 2018-01-01 00:00 with mean
-	ohrum_data.loc[ohrum_data["Waterlevel relative [cm]"] == " ---"] = np.mean(
+	ohrum_data.loc[ohrum_data["waterlevel relative [cm]"] == " ---"] = np.mean(
 		[ohrum_data.loc["2017-12-31 23:00:00"], ohrum_data.loc["2018-01-01 01:00:00"]]
 	)
-	ohrum_data = ohrum_data.astype(dtype={"Waterlevel relative [cm]": "float"})
+	ohrum_data = ohrum_data.astype(dtype={"waterlevel relative [cm]": "float"})
 
 	ohrum_data.to_csv(utils.get_processed_path("processed_ohrum_data.csv"))
 
