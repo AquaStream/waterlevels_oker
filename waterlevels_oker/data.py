@@ -236,8 +236,4 @@ def preprocess_brunswick_data() -> pd.DataFrame:
 
 	all_measurements = all_measurements.replace("-", np.nan).bfill()
 
-	all_measurements = all_measurements.rename(
-		columns={("Eisenbütteler Wehr", "OW"): "eisenbuetteler_wehr"}
-	)
-
 	return all_measurements
