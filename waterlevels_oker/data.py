@@ -163,3 +163,13 @@ def preprocess_okertal_data():
 	okertal_data.to_csv(utils.get_processed_path("process_okertal_data.csv"))
 
 	return okertal_data
+
+
+def get_full_data():
+	weather_data = preprocess_weather_data()
+
+	okertal_data = preprocess_okertal_data()
+
+	full_data = weather_data.join(okertal_data, how="inner")
+
+	return full_data
