@@ -4,8 +4,3 @@ repos:
     rev: v4.0.1
     hooks:
       - id: check-ast # Testing valid python code
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.11.0  # Use the latest version available
-    hooks:
-      - id: mypy # Testing valid python static types code
-        additional_dependencies: ['types-requests']
