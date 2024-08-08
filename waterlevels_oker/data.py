@@ -7,21 +7,23 @@ from waterlevels_oker.config import *
 
 def get_raw_weather_data():
 	"""
-	Gets weather data from https://brightsky.dev/docs/#/operations/getWeather starting 2010-01-01 until now.
+	Gets weather data from https://brightsky.dev/docs/#/operations/getWeather starting 2010-01-01 until 2024-07-31.
 	"""
-	params = {
-		"date": "2010-01-01",
-		"dwd_station_id": "00662",
-		"last_date": "2024-08-01",
-	}
+	full_weather = pd.DataFrame()
+	for year in range(2012, 2024):
+		params = {
+			"date": f"{year}-01-01",
+			"last_date": f"{year + 1}-07-31",
+			"lat": 51.85,
+			"lon": 10.45,
+		}
 
-	url = "https://api.brightsky.dev/weather"
-	response = requests.get(url, params=params)
+		url = "https://api.brightsky.dev/weather"
+		response = requests.get(url, params=params)
+		weather = pd.DataFrame(response.json()["weather"])
+		full_weather = pd.concat([full_weather, weather])
 
-	climate_data = pd.DataFrame(response.json()["weather"])
-	climate_data.to_csv(utils.get_raw_path("climate_data.csv"), index=False)
-
-	return climate_data
+	return full_weather
 
 
 def get_forecast(start: str, end: str) -> pd.DataFrame:
