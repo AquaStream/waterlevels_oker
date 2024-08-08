@@ -16,7 +16,7 @@ def forecast():
 	schladen_weather = get_forecast("schladen")
 	schladen_weather = preprocess_weather_data(schladen_weather)
 
-	full_schladen = schladen_weather.reset_index().join(schladen_weather)
+	full_schladen = schladen_weather.reset_index().join(okertal_pred)
 
 	# todo:
 	# scale etc
@@ -27,7 +27,7 @@ def forecast():
 	ohrum_weather = get_forecast("ohrum")
 	ohrum_weather = preprocess_weather_data(ohrum_weather)
 
-	full_ohrum = ohrum_weather.reset_index().join(ohrum_weather)
+	full_ohrum = ohrum_weather.reset_index().join(schladen_pred)
 
 	# todo:
 	# ohrum_model =
@@ -38,9 +38,7 @@ def forecast():
 	schaeferbruecke_weather = get_forecast("schaeferbruecke")
 	schaeferbruecke_weather = preprocess_weather_data(schaeferbruecke_weather)
 
-	full_schaeferbruecke = schaeferbruecke_weather.reset_index().join(
-		schaeferbruecke_weather
-	)
+	full_schaeferbruecke = schaeferbruecke_weather.reset_index().join(ohrum_pred)
 
 	# todo:
 	# schaeferbruecke_model =
@@ -52,7 +50,7 @@ def forecast():
 	eisenbuetteler_wehr_weather = preprocess_weather_data(eisenbuetteler_wehr_weather)
 
 	full_eisenbuetteler_wehr = eisenbuetteler_wehr_weather.reset_index().join(
-		eisenbuetteler_wehr_weather
+		schaeferbruecke_pred
 	)
 
 	# todo:
@@ -64,12 +62,12 @@ def forecast():
 	wendenwehr_weather = get_forecast("wendenwehr")
 	wendenwehr_weather = preprocess_weather_data(wendenwehr_weather)
 
-	full_wendenwehr = wendenwehr_weather.reset_index().join(wendenwehr_weather)
+	full_wendenwehr = wendenwehr_weather.reset_index().join(eisenbuetteler_pred)
 
 	# todo:
 	# wendenwehr_model =
 	# scale etc
-	wendenwehr_pred = None
+	# wendenwehr_pred
 
 	return wendenwehr_pred
 
