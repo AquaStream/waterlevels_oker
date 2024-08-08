@@ -196,6 +196,7 @@ def get_full_data():
 
 	okertal_data = preprocess_okertal_data()
 
-	full_data = weather_data.join(okertal_data, how="inner")
-
+	full_data = weather_data.join(okertal_data, how="inner").reset_index(
+		names=["timestamp"]
+	)
 	return full_data
