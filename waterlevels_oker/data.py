@@ -9,7 +9,7 @@ def get_raw_weather_data():
 	"""
 	Gets weather data from https://brightsky.dev/docs/#/operations/getWeather starting 2010-01-01 until 2024-07-31.
 	"""
-	full_weather = pd.DataFrame()
+	weather_raw = pd.DataFrame()
 	for year in range(2012, 2024):
 		params = {
 			"date": f"{year}-01-01",
@@ -21,9 +21,9 @@ def get_raw_weather_data():
 		url = "https://api.brightsky.dev/weather"
 		response = requests.get(url, params=params)
 		weather = pd.DataFrame(response.json()["weather"])
-		full_weather = pd.concat([full_weather, weather])
+		weather_raw = pd.concat([weather_raw, weather])
 
-	return full_weather
+	return weather_raw
 
 
 def get_forecast(start: str, end: str) -> pd.DataFrame:
@@ -107,7 +107,9 @@ def preprocess_weather_data() -> pd.DataFrame:
 
 	weather_raw.to_csv(utils.get_processed_path("processed_weather.csv"))
 
-	return weather_raw
+	daily_weather_data = weather_raw.groupby(weather_raw.index.date).mean()
+
+	return daily_weather_data
 
 
 def preprocess_ohrum_data() -> pd.DataFrame:
