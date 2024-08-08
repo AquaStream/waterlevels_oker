@@ -149,7 +149,7 @@ def preprocess_ohrum_data() -> pd.DataFrame:
 	return ohrum_data
 
 
-def process_okertal_data():
+def preprocess_okertal_data():
 	okertal_data = pd.read_excel(utils.get_raw_path("Oker Daten.xlsx"), index_col=0)
 
 	okertal_data = okertal_data.rename(
