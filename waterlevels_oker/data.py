@@ -147,3 +147,19 @@ def preprocess_ohrum_data() -> pd.DataFrame:
 	ohrum_data.to_csv(utils.get_processed_path("processed_ohrum_data.csv"))
 
 	return ohrum_data
+
+
+def process_okertal_data():
+	okertal_data = pd.read_excel(utils.get_raw_path("Oker Daten.xlsx"), index_col=0)
+
+	okertal_data = okertal_data.rename(
+		columns={
+			"Stauinhalt Okertalsperre [Mio.m³]": "fill_[mio.m³]",
+			"UW-Abgabe Okertalsperre [m³/s]": "output_[m³/s]",
+			"Zufluss Okertalsperre [m³/s]": "input_[m³/s]",
+		}
+	)
+
+	okertal_data.to_csv(utils.get_processed_path("process_okertal_data.csv"))
+
+	return okertal_data
