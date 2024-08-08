@@ -142,7 +142,7 @@ def preprocess_weather_data(raw_data) -> pd.DataFrame:
 def preprocess_okertal_data():
 	okertal_data = pd.read_excel(utils.get_raw_path("Oker Daten.xlsx"), index_col=0)
 
-	okertal_data = okertal_data.loc[:, "Stauinhalt Okertalsperre [Mio.m³]"].rename(
+	okertal_data = okertal_data.loc[:, ["Stauinhalt Okertalsperre [Mio.m³]"]].rename(
 		columns={
 			"Stauinhalt Okertalsperre [Mio.m³]": "fill_[mio.m³]",
 		}
@@ -201,7 +201,7 @@ def get_bridge_training_data():
 
 	processed_weather = preprocess_weather_data(weather)
 
-	ohrum_data = preprocess_brunswick_data().loc[:, "ohrum"]
+	ohrum_data = preprocess_brunswick_data().loc[:, "ohrum_level"]
 	bridge_data = preprocess_brunswick_data().loc[:, "schaeferbridge"]
 
 	full_data = (
