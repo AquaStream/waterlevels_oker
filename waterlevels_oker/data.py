@@ -50,8 +50,9 @@ def get_forecast(start: str, end: str) -> pd.DataFrame:
 	"""
 	params = {
 		"date": start,
-		"dwd_station_id": "00662",
 		"last_date": end,
+		"lat": 51.85,
+		"lon": 10.45,
 	}
 
 	url = "https://api.brightsky.dev/weather"
