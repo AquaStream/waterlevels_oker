@@ -7,21 +7,23 @@ from waterlevels_oker.config import *
 
 def get_raw_weather_data():
 	"""
-	Gets weather data from https://brightsky.dev/docs/#/operations/getWeather starting 2010-01-01 until now.
+	Gets weather data from https://brightsky.dev/docs/#/operations/getWeather starting 2010-01-01 until 2024-07-31.
 	"""
-	params = {
-		"date": "2010-01-01",
-		"dwd_station_id": "00662",
-		"last_date": "2024-08-01",
-	}
+	weather_raw = pd.DataFrame()
+	for year in range(2012, 2025):
+		params = {
+			"date": "{}-01-01".format(year),
+			"last_date": "{}-07-31".format(year + 1),
+			"lat": 51.85,
+			"lon": 10.45,
+		}
 
-	url = "https://api.brightsky.dev/weather"
-	response = requests.get(url, params=params)
+		url = "https://api.brightsky.dev/weather"
+		response = requests.get(url, params=params)
+		weather = pd.DataFrame(response.json()["weather"])
+		weather_raw = pd.concat([weather_raw, weather])
 
-	climate_data = pd.DataFrame(response.json()["weather"])
-	climate_data.to_csv(utils.get_raw_path("climate_data.csv"), index=False)
-
-	return climate_data
+	return weather_raw
 
 
 def get_forecast(start: str, end: str) -> pd.DataFrame:
@@ -48,8 +50,9 @@ def get_forecast(start: str, end: str) -> pd.DataFrame:
 	"""
 	params = {
 		"date": start,
-		"dwd_station_id": "00662",
 		"last_date": end,
+		"lat": "51.85",
+		"lon": "10.45",
 	}
 
 	url = "https://api.brightsky.dev/weather"
@@ -57,7 +60,33 @@ def get_forecast(start: str, end: str) -> pd.DataFrame:
 
 	forecast = pd.DataFrame(response.json()["weather"])
 
-	return forecast
+	forecast = forecast.assign(
+		timestamp=pd.to_datetime(forecast["timestamp"])
+	).set_index("timestamp")
+
+	# # Drop timezone from datetime index
+	forecast.index = forecast.index.tz_localize(None)
+
+	drop_cols = [
+		"source_id",
+		"condition",
+		"precipitation_probability",
+		"precipitation_probability_6h",
+		"fallback_source_ids",
+		"icon",
+	]
+	forecast = forecast.drop(columns=drop_cols)
+	# Impute missing sunshine values during nighttime with 0
+	night_missing_sunshine = forecast.loc[
+		forecast["sunshine"].isna() & forecast.index.hour.isin([21, 22, 23, 0, 1, 2])
+	].index
+	forecast.loc[night_missing_sunshine, "sunshine"] = 0
+
+	# forecast = forecast.dropna(axis=0)
+
+	daily_forecast = forecast.groupby(forecast.index.date).mean()
+
+	return daily_forecast
 
 
 def preprocess_weather_data() -> pd.DataFrame:
@@ -100,11 +129,13 @@ def preprocess_weather_data() -> pd.DataFrame:
 	].index
 	weather_raw.loc[night_missing_sunshine, "sunshine"] = 0
 
-	weather_raw = weather_raw.dropna(axis=0)
+	weather_raw = weather_raw.bfill()
 
 	weather_raw.to_csv(utils.get_processed_path("processed_weather.csv"))
 
-	return weather_raw
+	daily_weather_data = weather_raw.groupby(weather_raw.index.date).mean()
+
+	return daily_weather_data
 
 
 def preprocess_ohrum_data() -> pd.DataFrame:
@@ -142,7 +173,6 @@ def preprocess_ohrum_data() -> pd.DataFrame:
 	ohrum_data.to_csv(utils.get_processed_path("processed_ohrum_data.csv"))
 
 	return ohrum_data
-
 
 def preprocess_brunswick_data() -> pd.DataFrame:
 	measurements_2019 = pd.read_excel(
@@ -237,3 +267,29 @@ def preprocess_brunswick_data() -> pd.DataFrame:
 	all_measurements = all_measurements.replace("-", np.nan).bfill()
 
 	return all_measurements
+
+def preprocess_okertal_data():
+	okertal_data = pd.read_excel(utils.get_raw_path("Oker Daten.xlsx"), index_col=0)
+
+	okertal_data = okertal_data.rename(
+		columns={
+			"Stauinhalt Okertalsperre [Mio.m³]": "fill_[mio.m³]",
+			"UW-Abgabe Okertalsperre [m³/s]": "output_[m³/s]",
+			"Zufluss Okertalsperre [m³/s]": "input_[m³/s]",
+		}
+	)
+
+	okertal_data.to_csv(utils.get_processed_path("process_okertal_data.csv"))
+
+	return okertal_data
+
+
+def get_full_data():
+	weather_data = preprocess_weather_data()
+
+	okertal_data = preprocess_okertal_data()
+
+	full_data = weather_data.join(okertal_data, how="inner").reset_index(
+		names=["timestamp"]
+	)
+	return full_data
