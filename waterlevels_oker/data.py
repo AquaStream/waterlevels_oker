@@ -10,10 +10,10 @@ def get_raw_weather_data():
 	Gets weather data from https://brightsky.dev/docs/#/operations/getWeather starting 2010-01-01 until 2024-07-31.
 	"""
 	weather_raw = pd.DataFrame()
-	for year in range(2012, 2024):
+	for year in range(2012, 2025):
 		params = {
-			"date": f"{year}-01-01",
-			"last_date": f"{year + 1}-07-31",
+			"date": "{}-01-01".format(year),
+			"last_date": "{}-07-31".format(year + 1),
 			"lat": 51.85,
 			"lon": 10.45,
 		}
