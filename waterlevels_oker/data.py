@@ -60,7 +60,33 @@ def get_forecast(start: str, end: str) -> pd.DataFrame:
 
 	forecast = pd.DataFrame(response.json()["weather"])
 
-	return forecast
+	forecast = forecast.assign(
+		timestamp=pd.to_datetime(forecast["timestamp"])
+	).set_index("timestamp")
+
+	# # Drop timezone from datetime index
+	forecast.index = forecast.index.tz_localize(None)
+
+	drop_cols = [
+		"source_id",
+		"condition",
+		"precipitation_probability",
+		"precipitation_probability_6h",
+		"fallback_source_ids",
+		"icon",
+	]
+	forecast = forecast.drop(columns=drop_cols)
+	# Impute missing sunshine values during nighttime with 0
+	night_missing_sunshine = forecast.loc[
+		forecast["sunshine"].isna() & forecast.index.hour.isin([21, 22, 23, 0, 1, 2])
+	].index
+	forecast.loc[night_missing_sunshine, "sunshine"] = 0
+
+	# forecast = forecast.dropna(axis=0)
+
+	daily_forecast = forecast.groupby(forecast.index.date).mean()
+
+	return daily_forecast
 
 
 def preprocess_weather_data() -> pd.DataFrame:
@@ -103,7 +129,7 @@ def preprocess_weather_data() -> pd.DataFrame:
 	].index
 	weather_raw.loc[night_missing_sunshine, "sunshine"] = 0
 
-	weather_raw = weather_raw.dropna(axis=0)
+	weather_raw = weather_raw.bfill()
 
 	weather_raw.to_csv(utils.get_processed_path("processed_weather.csv"))
 
