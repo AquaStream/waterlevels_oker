@@ -2,7 +2,10 @@
 #### Akarshan, Oussama, Tim, Vishwa
 
 ---
-## Das Problem
+# Das Problem
+
+---
+## Die Oker
 ---
 ### Die Oker
 #### Zentral für Braunschweigs Geschichte und Entwicklung
@@ -23,16 +26,90 @@ Die Oker ist zentral für Braunschweigs Geschichte und Entwicklung. Früher dien
 Historisch gesehen hat die Stadt immer wieder mit Hochwassern zu kämpfen gehabt, aber trotz bestehender Schutzmaßnahmen bleibt das Risiko hoch, besonders durch den Klimawandel.
 
 ---
-## Die Lösung
+# Die Lösung
+
+---
+## Vorhersage der Okerwasserstände
+
+---
+/assets/Clipboard.png
+background: true
+
+---
+/assets/Clipboard 1.png
+
+---
+## Problem
+
+---
+/assets/Clipboard 2.png
+- Die Daten sind nur für das Jahr 2023 verfügbar
+- Damit also viel zu wenig für einen Trainingssatz
+
+---
+
+/assets/Clipboard 3.png
+
+Stadtentwässerung Braunschweig (SE|BS)
+
+---
+
+/assets/Clipboard 4.png
+- Betreiber der Okertalsperre (Harzwasserwerke) stellt auch Daten bereit, aber nur der letzten 10 Tage
+
+---
+/assets/Clipboard 5.png
+- Nds. Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz stellt ebenfalls Daten bereit, aber nur der letzten 30 Tage
+
+---
+## Also...?
+---
+
+/assets/Clipboard 7.png
+size: contain
+
+	- alle drei Stellen angerufen
+	- Daten von allen drei Stellen
+	- Daten der letzten 12 Jahre 
+
+Kurzerhand die jeweiligen Stellen angerufen und den Hackathon vorgestellt
+
+von allen drei Stellen haben wir Daten über einen Zeitraum von bis zu 12 Jahren erhalten
+
+---
+# Methodologie
+
+---
+## Methodologie
+### Chain von RandomForests
+	- Vorhersage des Wasserstands der Okertalsperre mit Hilfe von Wetterdaten des Deutschen Wetterdienst über API 
+	- Vorhersage in Schladen 
+	- 	Vorhersage in Ohrum 
+	- Vorhersage an der Schäferbrücke
+	- Vorhersage am Eisenbütteler Wehr 
+	- Vorhersage am Wendenwehr
+### Metrics
+	- RMSE von XXX
+	- MAE von XXX
+
+---
+# Ergebnisse
+
+---
+## Ergebnisse
 
 
-•⁠  ⁠Talk about the complexities which are involved in managing the flow of river, the trade-off between electricity generation and domestic use and maintaining the health of the river and all its inhabitants
+---
+# Zukunft
 
-•⁠  ⁠Talk about the journey of us reaching to the idea, the struggle to find data, thank people who gave us the data
+---
+## Zukunft
+	- #### Open Data
+	- #### Echtzeit Vorhersage
+	- #### Vorhersage der Energieproduktion
+	- #### Übertragbar in andere Städte/auf andere Flüsse
+- Zugang zu Echtzeitdaten
 
-•⁠  ⁠Present our solution and the results of the solution
-
-•⁠  ⁠Talk about the full methodology involved, use a lot of diagrams, keep it simple NOT using a lot of jargon
-
-•⁠  ⁠Talk about the implementation use a LOT OF JARGON
-
+---
+# Vielen Dank
+###### Insbesondere an Laura Amelung, Sworup Basnet, Daniel Gehrmann
