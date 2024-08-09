@@ -20,6 +20,8 @@ openpyxl = "^3.1.5"
 mkdocs = "^1.6.0"
 mkdocs-material = "^9.5.31"
 mkdocs-cinder = "^1.2.0"
+streamlit = "^1.37.1"
+plotly = "^5.23.0"
 
 [tool.poetry.group.dev.dependencies]
 ipdb = "^0.13.13"

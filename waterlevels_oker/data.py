@@ -81,7 +81,8 @@ def get_forecast(city: str) -> pd.DataFrame:
 	}
 
 	params = {
-		"date": datetime.now().date().isoformat(),
+		"date": "2024-08-09",
+		"last_date": "2024-08-16",
 		"lat": cities[city][0],
 		"lon": cities[city][1],
 	}
