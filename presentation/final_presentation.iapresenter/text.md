@@ -9,7 +9,7 @@
 ---
 ### Die Oker
 #### Zentral für Braunschweigs Geschichte und Entwicklung
-	 - früher: Verteidigungsgraben und Stadtmauer
+	 - früher: Verteidigungsgraben um Stadtmauer
 	 - heute: Naherholungsgebiet
 
 /assets/Clipboard 8.png
@@ -37,32 +37,37 @@ Historisch gesehen hat die Stadt immer wieder mit Hochwassern zu kämpfen gehabt
 
 ---
 /assets/Clipboard.png
-background: true
+size: contain
 
 ---
 /assets/Clipboard 1.png
+size: contain
 
 ---
 ## Problem
 
 ---
 /assets/Clipboard 2.png
+size: contain
 - Die Daten sind nur für das Jahr 2023 verfügbar
 - Damit also viel zu wenig für einen Trainingssatz
 
 ---
 
 /assets/Clipboard 3.png
+size: contain
 
 Stadtentwässerung Braunschweig (SE|BS)
 
 ---
 
 /assets/Clipboard 4.png
+size: contain
 - Betreiber der Okertalsperre (Harzwasserwerke) stellt auch Daten bereit, aber nur der letzten 10 Tage
 
 ---
 /assets/Clipboard 5.png
+size: contain
 - Nds. Landesbetrieb für Wasserwirtschaft, Küsten- und Naturschutz stellt ebenfalls Daten bereit, aber nur der letzten 30 Tage
 
 ---
@@ -72,6 +77,7 @@ Stadtentwässerung Braunschweig (SE|BS)
 /assets/Clipboard 7.png
 size: contain
 
+#  
 	- alle drei Stellen angerufen
 	- Daten von allen drei Stellen
 	- Daten der letzten 12 Jahre 
@@ -84,41 +90,89 @@ von allen drei Stellen haben wir Daten über einen Zeitraum von bis zu 12 Jahren
 # Ergebnisse
 
 ---
-## Ergebnisse
 ### Okertalsperre
+/assets/okertal.png
+size: contain
 
 ### Schladen
+/assets/schladen.png
+size: contain
 
 ### Ohrum
+/assets/ohrum.png
+size: contain
 
 ### Schäferbrücke
+/assets/bridge.png
+size: contain
 
 ### Eisenbütteler Wehr
+/assets/eisenbuttel.png
+size: contain
 
 ### Wendenwehr
+/assets/wendwehr.png
+size: contain
+
+---
+### API
+/assets/Clipboard 18.png
+size: contain
+
+---
+## Use Cases
+	- Optimierung/Automatisierung von Wassermanagement
+	- Frühzeitiges Erkennen von Bedrohungen
+	- Frühzeitiges Ergreifen von Wasserschutzmaßnahmen
+	- Informativ für Wassersportler:innen
 
 ---
 # Methodologie
 
 ---
-## Methodologie
-### Data Cleaning
 
+## Data Cleaning
+---
 /assets/Clipboard 10.png
+size: contain
 y: top
 
 ---
-### Chain von RandomForests
-	- Vorhersage des Wasserstands der Okertalsperre mit Hilfe von Wetterdaten des Deutschen Wetterdienst über API 
-	- Vorhersage in Schladen 
-	- 	Vorhersage in Ohrum 
-	- Vorhersage an der Schäferbrücke
-	- Vorhersage am Eisenbütteler Wehr 
-	- Vorhersage am Wendenwehr
-### Metrics
-	- RMSE von XXX
-	- MAE von XXX
 
+/assets/Clipboard 12.png
+size: contain
+
+---
+## Modeling
+
+---
+
+/assets/Clipboard 13.png
+size: contain
+
+- karte
+- Einfluss von früher auf später
+- Korrelation der Wetterdaten ist unterschiedlich
+- Wassermanagement an vielen Stellen
+
+---
+
+###### *Chain of thought* von RandomForests
+/assets/Give me visualstructure how the river oker flows.png
+size: contain
+
+---
+
+/assets/Clipboard 17.png
+size: contain
+
+## RMSE
+	 - Okertalsperre: 6.97
+	 - Schladen: 0.06
+	 - Ohrum: 0.07
+	 - Schäferbrücke: 0.1
+	 - Eisenbütteler Wehr:  0.18
+	 - Wendenwehr: 0.16
 ---
 # Zukunft
 
@@ -130,6 +184,15 @@ y: top
 	- #### Übertragbar in andere Städte/auf andere Flüsse
 - Zugang zu Echtzeitdaten
 
+
+
 ---
 # Vielen Dank
+/assets/AquaStream.png
+size: contain
+
+
+/assets/IMG_5071.jpeg
+x: right
+
 ###### Insbesondere an Laura Amelung, Sworup Basnet, Daniel Gehrmann
