@@ -12,6 +12,8 @@
 	 - früher: Verteidigungsgraben und Stadtmauer
 	 - heute: Naherholungsgebiet
 
+/assets/Clipboard 8.png
+
 Die Oker ist zentral für Braunschweigs Geschichte und Entwicklung. Früher diente sie als Verteidigungsgraben um die Stadtmauer, heute ist sie ein beliebtes Naherholungsgebiet und beliebtes Ziel für Freizeitaktivitäten wie Bootsfahrten und Spaziergänge.
 ---
 ### Die Oker
@@ -20,6 +22,8 @@ Die Oker ist zentral für Braunschweigs Geschichte und Entwicklung. Früher dien
 	- Hochwasser
 	- Dammbruch Okertalsperre
 	- besondere Bedrohung durch Klimawandel
+
+/assets/Clipboard 9.png
 
 Überschwemmungen der Oker stellen eine bedeutende Gefahr für Braunschweig dar. Besonders bei starken Regenfällen oder Schneeschmelze kann der Fluss schnell über die Ufer treten und angrenzende Wohngebiete gefährden
 
@@ -77,10 +81,33 @@ Kurzerhand die jeweiligen Stellen angerufen und den Hackathon vorgestellt
 von allen drei Stellen haben wir Daten über einen Zeitraum von bis zu 12 Jahren erhalten
 
 ---
+# Ergebnisse
+
+---
+## Ergebnisse
+### Okertalsperre
+
+### Schladen
+
+### Ohrum
+
+### Schäferbrücke
+
+### Eisenbütteler Wehr
+
+### Wendenwehr
+
+---
 # Methodologie
 
 ---
 ## Methodologie
+### Data Cleaning
+
+/assets/Clipboard 10.png
+y: top
+
+---
 ### Chain von RandomForests
 	- Vorhersage des Wasserstands der Okertalsperre mit Hilfe von Wetterdaten des Deutschen Wetterdienst über API 
 	- Vorhersage in Schladen 
@@ -91,13 +118,6 @@ von allen drei Stellen haben wir Daten über einen Zeitraum von bis zu 12 Jahren
 ### Metrics
 	- RMSE von XXX
 	- MAE von XXX
-
----
-# Ergebnisse
-
----
-## Ergebnisse
-
 
 ---
 # Zukunft
