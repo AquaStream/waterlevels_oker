@@ -23,6 +23,8 @@ mkdocs-cinder = "^1.2.0"
 streamlit = "^1.37.1"
 plotly = "^5.23.0"
 flask = "^3.0.3"
+fastapi = "^0.112.0"
+uvicorn = "^0.30.5"
 
 [tool.poetry.group.dev.dependencies]
 ipdb = "^0.13.13"
