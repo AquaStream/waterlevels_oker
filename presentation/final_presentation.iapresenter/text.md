@@ -1,4 +1,4 @@
-# Vorhersage Wasserstände 
+# We don’t hallucinate
 #### Akarshan, Oussama, Tim, Vishwa
 
 ---
@@ -115,9 +115,13 @@ size: contain
 size: contain
 
 ---
-### API
-/assets/Clipboard 18.png
+#### API
+`192.168`
+/assets/Clipboard 23.png
 size: contain
+/assets/WhatsApp Image 2024-08-09 at 12.16.22.jpeg
+size: contain
+
 
 ---
 ## Use Cases
@@ -174,23 +178,23 @@ size: contain
 	 - Eisenbütteler Wehr:  0.18
 	 - Wendenwehr: 0.16
 ---
-# Zukunft
+# Outlook
 
 ---
-## Zukunft
+## Outlook
 	- #### Open Data
 	- #### Echtzeit Vorhersage
 	- #### Vorhersage der Energieproduktion
 	- #### Übertragbar in andere Städte/auf andere Flüsse
 - Zugang zu Echtzeitdaten
 
-
-
 ---
 # Vielen Dank
 /assets/AquaStream.png
 size: contain
 
+/assets/Clipboard 6.png
+size: contain
 
 /assets/IMG_5071.jpeg
 x: right
