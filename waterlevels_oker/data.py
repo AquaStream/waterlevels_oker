@@ -81,7 +81,8 @@ def get_forecast(city: str) -> pd.DataFrame:
 	}
 
 	params = {
-		"date": datetime.now().date().isoformat(),
+		"date": "2024-08-09",
+		"last_date": "2024-08-16",
 		"lat": cities[city][0],
 		"lon": cities[city][1],
 	}
@@ -142,7 +143,7 @@ def preprocess_weather_data(raw_data) -> pd.DataFrame:
 def preprocess_okertal_data():
 	okertal_data = pd.read_excel(utils.get_raw_path("Oker Daten.xlsx"), index_col=0)
 
-	okertal_data = okertal_data.loc[:, "Stauinhalt Okertalsperre [Mio.m³]"].rename(
+	okertal_data = okertal_data.loc[:, ["Stauinhalt Okertalsperre [Mio.m³]"]].rename(
 		columns={
 			"Stauinhalt Okertalsperre [Mio.m³]": "fill_[mio.m³]",
 		}
@@ -201,7 +202,7 @@ def get_bridge_training_data():
 
 	processed_weather = preprocess_weather_data(weather)
 
-	ohrum_data = preprocess_brunswick_data().loc[:, "ohrum"]
+	ohrum_data = preprocess_brunswick_data().loc[:, "ohrum_level"]
 	bridge_data = preprocess_brunswick_data().loc[:, "schaeferbridge"]
 
 	full_data = (
@@ -250,5 +251,99 @@ def get_okertal_forecast_data():
 
 	return processed_weather
 
+
+def preprocess_brunswick_data() -> pd.DataFrame:
+ 	measurements_2019 = pd.read_excel(
+ 		utils.get_raw_path("Übersicht Pegelwerte 2019-2023.xlsx"),
+ 		sheet_name="2019",
+ 		header=[0, 1],
+ 	)
+
+ 	measurements_2019.columns = measurements_2019.columns.to_flat_index()
+ 	measurements_2019 = measurements_2019.rename(
+ 		columns={("Datum", "Unnamed: 1_level_1"): "timestamp"}
+ 	)
+
+ 	measurements_2020 = pd.read_excel(
+ 		utils.get_raw_path("Übersicht Pegelwerte 2019-2023.xlsx"),
+ 		sheet_name="2020",
+ 		header=[0, 1],
+ 	)
+
+ 	measurements_2020.columns = measurements_2020.columns.to_flat_index()
+ 	measurements_2020 = measurements_2020.rename(
+ 		columns={("2020", "Unnamed: 1_level_1"): "timestamp"}
+ 	)
+
+ 	measurements_2021 = pd.read_excel(
+ 		utils.get_raw_path("Übersicht Pegelwerte 2019-2023.xlsx"),
+ 		sheet_name="2021",
+ 		header=[1, 2],
+ 	)
+
+ 	measurements_2021.columns = measurements_2021.columns.to_flat_index()
+ 	measurements_2021 = measurements_2021.rename(
+ 		columns={("2021", "Unnamed: 1_level_1"): "timestamp"}
+ 	)
+
+ 	measurements_2022 = pd.read_excel(
+ 		utils.get_raw_path("Übersicht Pegelwerte 2019-2023.xlsx"),
+ 		sheet_name="2022",
+ 		header=[0, 1],
+ 	)
+
+ 	measurements_2022.columns = measurements_2022.columns.to_flat_index()
+ 	measurements_2022 = measurements_2022.rename(
+ 		columns={(2022, "Uhrzeit.2"): "timestamp"}
+ 	)
+
+ 	measurements_2023 = pd.read_excel(
+ 		utils.get_raw_path("Übersicht Pegelwerte 2019-2023.xlsx"),
+ 		sheet_name="2023",
+ 		header=[0, 1],
+ 	)
+
+ 	measurements_2023.columns = measurements_2023.columns.to_flat_index()
+ 	measurements_2023 = measurements_2023.rename(
+ 		columns={
+ 			(2023, "Uhrzeit.2"): "timestamp",
+ 		}
+ 	)
+
+ 	all_measurements = pd.concat(
+ 		[
+ 			measurements_2019,
+ 			measurements_2020,
+ 			measurements_2021,
+ 			measurements_2022,
+ 			measurements_2023,
+ 		]
+ 	).set_index("timestamp")
+
+ 	all_measurements = all_measurements[
+ 		[
+ 			("Schladen", 88.72),
+ 			("Ohrum", 75.54),
+ 			("sensoweb", "Schäferbr."),
+ 			("Eisenbütteler Wehr", "OW"),
+ 			("Petriwehr", "OW"),
+ 			("Wendenwehr", "OW"),
+ 		]
+ 	]
+
+ 	all_measurements = all_measurements.rename(
+ 		columns={
+ 			("Schladen", 88.72): "schladen",
+ 			("Ohrum", 75.54): "ohrum_level",
+ 			("sensoweb", "Schäferbr."): "schaeferbridge",
+ 			("Eisenbütteler Wehr", "OW"): "eisenbuetteler_wehr",
+ 			("Petriwehr", "OW"): "petriwehr",
+ 			("Wendenwehr", "OW"): "wendenwehr",
+ 		}
+ 	)
+
+ 	all_measurements = all_measurements.replace("-", np.nan).bfill()
+
+ 	return all_measurements
 
 # todo: forecasts funcs
