@@ -1,0 +1,12 @@
+{
+  "creatorIdentifier" : "net.ia.presenter",
+  "net.ia.presenter" : {
+    "darkbackgroundcolor" : "Transparent",
+    "localFileIdentifier" : "321C282B-2D85-430A-AF9D-ED4A9130B8FC",
+    "preset" : "Default",
+    "template" : "copenhagen"
+  },
+  "transient" : false,
+  "type" : "net.daringfireball.markdown",
+  "version" : 2
+}
